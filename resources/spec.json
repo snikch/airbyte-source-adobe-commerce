@@ -1,0 +1,32 @@
+{
+    "documentationUrl": "",
+    "connectionSpecification": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "title": "Adobe Commerce Spec",
+        "type": "object",
+        "required": [
+            "api_key",
+            "api_url"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "api_key": {
+                "type": "string",
+                "title": "API key",
+                "description": "In order to create key, in your Adobe Commerce / Magento instance, go to System > Integrations",
+                "airbyte_secret": true
+            },
+            "api_url": {
+                "type": "string",
+                "title": "API URL",
+                "description": "The URL of your Adobe Commerce / Magento installation."
+            },
+            "page_size": {
+                "type": "number",
+                "title": "Page size",
+                "default": 100,
+                "description": "Used when retrieving paginated data from Adobe Commerce / Magento"
+            }
+        }
+    }
+}

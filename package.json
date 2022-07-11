@@ -1,0 +1,62 @@
+{
+  "name": "airbyte-source-adobe-commerce",
+  "version": "0.0.1",
+  "description": "Adobe Commerce / Magento Airbyte source",
+  "keywords": [
+    "airbyte",
+    "source",
+    "magento",
+    "adobe commerce"
+  ],
+  "homepage": "https://github.com/snikch/airbyte-source-adobe-commerce",
+  "author": "Mal Curtis",
+  "license": "MIT",
+  "files": [
+    "lib/",
+    "resources/"
+  ],
+  "engines": {
+    "node": ">=16"
+  },
+  "main": "./lib",
+  "scripts": {
+    "build": "tsc -p ./src",
+    "clean": "rm -rf lib node_modules out",
+    "fix": "prettier --write 'src/**/*.ts' 'test/**/*.ts' && npm run lint -- --fix",
+    "generate": "openapi-generator-cli generate --skip-validate-spec -i ./resources/latest-2.2.schema.json -g typescript-axios -o ./src/openapi",
+    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
+    "watch": "tsc -b -w src test"
+  },
+  "dependencies": {
+    "axios": "^0.26.0",
+    "commander": "^9.3.0",
+    "faros-airbyte-cdk": "^0.2.9",
+    "graphql-request": "^4.0.0",
+    "verror": "^1.10.1"
+  },
+  "jest": {
+    "coverageDirectory": "out/coverage",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/test/"
+    ],
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      ".d.ts",
+      ".js"
+    ],
+    "testTimeout": 10000,
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "test/tsconfig.json"
+      }
+    }
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.5.1",
+    "@types/node": "^18.0.3",
+    "ts-essentials": "^9.2.0",
+    "typescript": "^4.7.4"
+  }
+}

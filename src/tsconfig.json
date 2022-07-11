@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "../lib",
+    "experimentalDecorators": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "pretty": true,
+    "resolveJsonModule": false,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "strict": true,
+    "strictNullChecks": false,
+    "target": "es2019"
+  }
+}
