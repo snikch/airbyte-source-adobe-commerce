@@ -2,7 +2,7 @@ import { AirbyteLogger, AirbyteStreamBase, StreamKey, SyncMode } from "faros-air
 import { Dictionary } from "ts-essentials"
 
 import { AdobeCommerce, AdobeCommerceConfig } from "../adobe-commerce/adobe-commerce"
-import { CustomerDataCustomerInterface } from "../openapi"
+import { Customer } from "../adobe-commerce/models"
 
 interface CustomerState {
     lastCreatedAt?: Date;
@@ -22,14 +22,14 @@ export class Customers extends AirbyteStreamBase {
         return 'id';
     }
     get cursorField(): string | string[] {
-        return 'created_at';
+        return 'updated_at';
     }
     async *readRecords(
         syncMode: SyncMode,
         cursorField?: string[],
         streamSlice?: Dictionary<any>,
         streamState?: CustomerState
-    ): AsyncGenerator<CustomerDataCustomerInterface> {
+    ): AsyncGenerator<Customer> {
         const lastCreatedAt =
             syncMode === SyncMode.INCREMENTAL
                 ? new Date(streamState?.lastCreatedAt ?? 0)
@@ -40,9 +40,9 @@ export class Customers extends AirbyteStreamBase {
 
     getUpdatedState(
         currentStreamState: CustomerState,
-        latestRecord: CustomerDataCustomerInterface
+        latestRecord: Customer
     ): CustomerState {
-        const lastCreatedAt = new Date(latestRecord.created_at);
+        const lastCreatedAt = new Date(latestRecord.updated_at!);
         return {
             lastCreatedAt:
                 new Date(lastCreatedAt) >

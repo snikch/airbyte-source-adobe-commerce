@@ -14,7 +14,7 @@ export interface AdobeCommerceConfig {
 }
 
 export class AdobeCommerce {
-  private static adobeCommerce: AdobeCommerce = null;
+  private static adobeCommerce?: AdobeCommerce;
 
   constructor(
     private readonly restClient: AxiosInstance,
@@ -79,6 +79,7 @@ export class AdobeCommerce {
       }
       return response;
     } while (attemptCount < MAX_NUMBER_OF_RETRIES);
+    return Promise.reject()
   }
 
   async *getCustomers(createdAt?: Date): AsyncGenerator<Customer> {
