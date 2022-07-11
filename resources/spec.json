@@ -21,6 +21,12 @@
                 "title": "API URL",
                 "description": "The URL of your Adobe Commerce / Magento installation."
             },
+            "api_timeout_ms": {
+                "type": "number",
+                "title": "API Timeout (ms)",
+                "default": 10000,
+                "description": "Determines the timeout when awaiting responses from Adobe Commerce / Magento"
+            },
             "page_size": {
                 "type": "number",
                 "title": "Page size",

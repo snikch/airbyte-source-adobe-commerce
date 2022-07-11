@@ -9,6 +9,7 @@ const MAX_NUMBER_OF_RETRIES = 10;
 
 export interface AdobeCommerceConfig {
   readonly api_key: string;
+  readonly api_timeout_ms: number;
   readonly api_url: string;
   readonly page_size?: number;
 }
@@ -33,7 +34,7 @@ export class AdobeCommerce {
     }
     const httpClient = axios.create({
       baseURL: config.api_url,
-      timeout: 5000,
+      timeout: config.api_timeout_ms,
       headers: {Authorization: `Bearer ${config.api_key}`},
     });
 
