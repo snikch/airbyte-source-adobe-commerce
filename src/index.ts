@@ -6,7 +6,7 @@ import {
 import VError from "verror"
 
 import { AdobeCommerce, AdobeCommerceConfig } from "./adobe-commerce/adobe-commerce"
-import { Customers } from "./streams"
+import { Customers, Products } from "./streams"
 
 /** The main entry point. */
 export function mainCommand(): Command {
@@ -35,6 +35,7 @@ export class AdobeCommerceSource extends AirbyteSourceBase {
     streams(config: AirbyteConfig): AirbyteStreamBase[] {
         return [
             new Customers(config as AdobeCommerceConfig, this.logger),
+            new Products(config as AdobeCommerceConfig, this.logger),
         ];
     }
 }

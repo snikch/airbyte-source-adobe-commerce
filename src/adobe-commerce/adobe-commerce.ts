@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios"
 import { AirbyteLogger, wrapApiError } from "faros-airbyte-cdk"
 import { VError } from "verror"
 
-import { Customer, CustomerSearchResults } from "./models"
+import { Customer, CustomerSearchResults, Product, ProductSearchResults } from "./models"
 
 const DEFAULT_PAGE_SIZE = 100;
 const MAX_NUMBER_OF_RETRIES = 10;
@@ -110,29 +110,30 @@ export class AdobeCommerce {
     } while (true);
   }
 
-  // async *getUsers(): AsyncGenerator<User> {
-  //   let offset = 0;
-  //   do {
-  //     const params = {offset, limit: this.pageSize, sort: 'createdAt'};
-  //     const response = await this.retryApi<PaginateResponse<User>>(
-  //       'v2/users',
-  //       params
-  //     );
-  //     for (const user of response.data.data) {
-  //       yield user;
-  //     }
-  //     if (response?.data.totalCount > offset + this.pageSize) {
-  //       offset += this.pageSize;
-  //     } else {
-  //       break;
-  //     }
-  //   } while (true);
-  // }
-
-  // async *getTeams(): AsyncGenerator<Team> {
-  //   const response = await this.retryApi<PaginateResponse<Team>>('v2/teams');
-  //   for (const team of response.data.data) {
-  //     yield team;
-  //   }
-  // }
+  async *getProducts(createdAt?: Date): AsyncGenerator<Product> {
+    let page = 0;
+    do {
+      const params = {
+        'searchCriteria[currentPage]': page,
+        'searchCriteria[pageSize]': this.pageSize,
+        'searchCriteria[sortOrders][0][direction]': 'asc',
+        'searchCriteria[sortOrders][0][field]': 'created_at',
+      };
+      if (createdAt) {
+        params['searchCriteria[filterGroups][0][filters][0][field]'] = 'created_at'
+        params['searchCriteria[filterGroups][0][filters][0][value]'] = createdAt.toISOString()
+        params['searchCriteria[filterGroups][0][filters][0][conditionType]'] = 'gt'
+      }
+      const response = await this.retryApi<ProductSearchResults>(
+        `V1/products`,
+        params
+      );
+      for (const item of response?.data?.items ?? []) {
+          yield item;
+      }
+      if (response?.data.items.length > 0 )
+        page++;
+      else break;
+    } while (true);
+  }
 }
